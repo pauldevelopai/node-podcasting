@@ -110,12 +110,23 @@ node-podcasting. Keep this tab open.
 (If Paul has instead added you as a *collaborator* on the main repo, he'll tell
 you — in that case skip the fork and use the main repo link he sends.)
 
-Step 4c — Download your copy to your computer
-On your fork's page, click the green **Code** button, then **Download ZIP**.
-The ZIP lands in Downloads. Unzip it (double-click on Mac; right-click → Extract
-All on Windows). You'll get a folder like node-podcasting-main.
-Move it somewhere sensible — drag it into Documents. Rename it if you like
-(Podcast Studio is fine).
+Step 4c — Get your copy onto your computer (use GitHub Desktop)
+Do **not** use "Download ZIP" — a ZIP is a dead copy that can't receive updates
+or keep the GROUNDED dashboard current. Use **GitHub Desktop** instead (a free
+app, no commands), which makes a proper *connected* copy:
+1. Go to **desktop.github.com**, download and install GitHub Desktop, then open
+   it.
+2. Click **Sign in to GitHub.com** and log in with the account you forked with.
+   (This same sign-in is what lets the app quietly send Paul your usage stats
+   later — there's nothing else to set up.)
+3. **File → Clone repository…**, find **your-username/node-podcasting** in the
+   list, choose where to put it (Documents is fine), and click **Clone**.
+
+You now have a real, connected copy — so both updates and the dashboard work.
+(On a Mac, the first time the app syncs it may ask to install Apple's "Command
+Line Tools" — click Install; it's a one-time, few-minute step.)
+
+(Comfortable in a terminal instead? `git clone https://github.com/your-username/node-podcasting.git` works too.)
 
 Step 4d — Open the folder in VS Code
 In VS Code: File → Open Folder… → choose that folder → Open.
@@ -151,9 +162,9 @@ Leave this terminal open — as long as it says "is running", the app is alive.
 
 Open your browser and go to **localhost:3000**.
 If a built-in key was supplied, the app opens straight to the dashboard. If not,
-you'll see a welcome screen — paste your ElevenLabs key, give it a label
-(optional), and click **Add key**. Keys are saved on your own computer and never
-go to GitHub.
+you'll see a welcome screen — paste your ElevenLabs key (your own, or the shared
+Develop AI key Paul sent you), give it a label (optional), and click **Add
+key**. Keys are saved on your own computer and never go to GitHub.
 
 Now you'll see the app with four tabs across the top: **Generate, Voices,
 History, Activity**.

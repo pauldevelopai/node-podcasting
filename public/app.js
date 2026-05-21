@@ -36,7 +36,7 @@ function renderKeyManager(status) {
   $("#setup-title").textContent = configured ? "ElevenLabs API keys" : "Welcome — add your ElevenLabs key";
   $("#setup-intro").innerHTML = configured
     ? "Manage the keys this Studio can use. The <b>active</b> key (green) is used for cloning and generation."
-    : "This Studio uses <b>ElevenLabs</b> to clone voices and generate audio. Add a key to get started — voice cloning needs a paid ElevenLabs plan (Starter tier or above).";
+    : "This Studio uses <b>ElevenLabs</b> to clone voices and generate audio. <b>Paste the key Develop AI sent you</b> (or your own ElevenLabs key) to get started — voice cloning needs a paid ElevenLabs plan, Starter tier or above.";
 
   const list = $("#key-list");
   list.innerHTML = (status.keys || []).map(k => `

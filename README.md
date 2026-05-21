@@ -27,11 +27,11 @@ terracotta bar at the top, a footer, and a **Feedback** button in the
 bottom-right that messages Paul directly.
 
 Being honest up front: a small amount of *non-content* information about your
-install is committed to your copy on GitHub so Develop AI can see that the app
-is being used and where it's failing — operation names, dates, durations, voice
-*names* and counts, episode *titles* and lengths. **Never** your transcripts,
-your audio, your voice samples, or your API key. The full, exact list is in
-"What you share with Develop AI" near the bottom. Read it.
+install is sent to Develop AI over the internet so they can see that the app is
+being used and where it's failing — operation names, dates, durations and
+counts. **Never** your transcripts, your audio, your voice samples, or your API
+key. The full, exact list is in "What you share with Develop AI" near the
+bottom. Read it.
 
 ---
 
@@ -92,46 +92,31 @@ app stores keys in private files on your own computer that never go to GitHub.
 
 **Part 4 — Get the app onto your computer**
 
-This is the GitHub bit. GitHub is a website where the app's code lives. You'll
-make your own personal copy (a *fork*) and download it. Your copy is yours
-forever — even if Develop AI disappears tomorrow, your copy keeps working.
+GitHub is the website where the app's code lives. You'll copy it to your
+computer using VS Code — **no GitHub account, no sign-in, no "fork"**, and
+nothing ever gets pushed back from your machine. Your copy is yours: even if
+Develop AI disappears tomorrow, it keeps working.
 
-Step 4a — Make a GitHub account (if you don't have one)
-Go to **github.com**, click Sign up, use your work email.
+Step 4a — Clone the app in VS Code
+1. In VS Code, open the **Command Palette**: **View → Command Palette…** (or
+   press Cmd-Shift-P on Mac / Ctrl-Shift-P on Windows).
+2. Type **Git: Clone** and press Enter.
+3. Paste this address and press Enter:
 
-Step 4b — Fork the app to your own account
-Signed in to GitHub, go to the link Paul gives you:
-https://github.com/pauldevelopai/node-podcasting
-Top-right, click **Fork**, then the green **Create fork** button (leave the
-settings as they are). After a moment GitHub shows the project under your own
-username — check the top-left: it should read *your-username* /
-node-podcasting. Keep this tab open.
+       https://github.com/pauldevelopai/node-podcasting.git
 
-(If Paul has instead added you as a *collaborator* on the main repo, he'll tell
-you — in that case skip the fork and use the main repo link he sends.)
+4. Choose where to put it (Documents is fine). VS Code downloads it and asks
+   **"Would you like to open the cloned repository?"** — click **Open**.
 
-Step 4c — Get your copy onto your computer (use GitHub Desktop)
-Do **not** use "Download ZIP" — a ZIP is a dead copy that can't receive updates
-or keep the GROUNDED dashboard current. Use **GitHub Desktop** instead (a free
-app, no commands), which makes a proper *connected* copy:
-1. Go to **desktop.github.com**, download and install GitHub Desktop, then open
-   it.
-2. Click **Sign in to GitHub.com** and log in with the account you forked with.
-   (This same sign-in is what lets the app quietly send Paul your usage stats
-   later — there's nothing else to set up.)
-3. **File → Clone repository…**, find **your-username/node-podcasting** in the
-   list, choose where to put it (Documents is fine), and click **Clone**.
+That's the whole thing — no fork, no login. (If VS Code says it can't find
+**git**: on a Mac, click **Install** on the "Command Line Tools" pop-up — a
+one-time, few-minute step — then try again; on Windows, install Git from
+**git-scm.com**, then reopen VS Code.)
 
-You now have a real, connected copy — so both updates and the dashboard work.
-(On a Mac, the first time the app syncs it may ask to install Apple's "Command
-Line Tools" — click Install; it's a one-time, few-minute step.)
+(Comfortable in a terminal instead? `git clone https://github.com/pauldevelopai/node-podcasting.git` does the same.)
 
-(Comfortable in a terminal instead? `git clone https://github.com/your-username/node-podcasting.git` works too.)
-
-Step 4d — Open the folder in VS Code
-In VS Code: File → Open Folder… → choose that folder → Open.
-If asked "Do you trust the authors?", click Yes. On the left you'll see file
-names: data, lib, public, index.js, package.json, and so on. That's the app.
+On the left you'll now see the app's files: data, lib, public, index.js,
+package.json, and so on. That's the app.
 
 **Part 5 — Run the app for the first time**
 
@@ -223,34 +208,24 @@ This is the most important section. Be clear on it before you train voices.
 - The transcripts you paste in.
 - The generated MP3 podcast files (in `data/processed/podcasts/`).
 
-**Committed to your copy on GitHub — visible to Develop AI:**
-- `node_podcasting_meta.json` — install ID, app version, your OS,
-  how many times you've launched it.
-- `node_podcasting_activity.json` — operation names, types,
-  durations and counts (e.g. "podcast generated, 612 seconds of audio, 4,823
-  characters"). **Never** the transcript or audio itself.
-- `node_podcasting_errors.json` — sanitised error records, so Paul
-  can see where the app breaks.
-- `node_podcasting_feedback.json` — anything you type into the
-  in-app **Feedback** button.
-- `node_podcasting_voices.json` — voice *display names*, dates
-  trained, sample counts, and the slider settings (just numbers). It also stores
-  ElevenLabs' internal voice IDs (meaningless without your ElevenLabs account)
-  and the local file paths of your samples — the sample *audio* itself never
-  leaves your computer.
-- `node_podcasting_podcasts.json` — episode *titles*, dates,
-  character counts, and audio duration in seconds. **Not** the transcripts,
-  **not** the audio.
+**Sent to Develop AI (over the internet, automatically):**
+The app reports a little *non-content* metadata so Develop AI can see it's being
+used and fix what breaks. This goes straight to Develop AI over the internet —
+nothing to push, no GitHub account involved:
+- **Install heartbeat** — a random install ID, the app version, your operating
+  system, and how many times you've launched the app.
+- **Activity** — operation names, types, durations and counts (e.g. "podcast
+  generated, 612 seconds of audio, 4,823 characters"). **Never** the transcript
+  or the audio.
+- **Errors** — sanitised error records, so Paul can see where the app breaks.
+- **Feedback** — anything you type into the in-app **Feedback** button.
 
-**These metadata files sync automatically.** Each time you launch the app
-(Start) or update it (Update), it commits and pushes *only the files listed
-above* to your GitHub copy — never your audio, transcripts, samples, or keys.
-There are no git commands to type. If you're offline, nothing breaks — they
-simply sync on your next launch.
+Your voice list, podcast list, slider settings and history stay **on your
+computer only** (in `data/processed/`) — they are never uploaded.
 
 **The Feedback button** is the one place where text you type intentionally
-leaves your laptop — it's committed to your copy so Paul can read it. The
-feedback box says so before you send.
+leaves your laptop — it's sent to Develop AI over the internet so Paul can read
+it. The feedback box says so before you send.
 
 **About ElevenLabs:** voice training and podcast generation use ElevenLabs' API.
 That means ElevenLabs sees the audio samples (during training) and the
@@ -279,12 +254,12 @@ the web for the whole newsroom.
 - **On a Mac:** double-click **Update.command** in your folder.
 - **On Windows:** double-click **Update.bat**.
 
-A terminal opens, fetches the latest version from Develop AI, and merges it into
-your copy. Your voices, podcasts, settings and usage stats are kept automatically
-— they live in different files from the app's code, so an update never touches
-them. If anything ever can't be merged cleanly, the update stops without changing
-a thing and asks you to email Paul — it can't break your app or lose your work.
-When it says "Update complete", close the window and double-click Start again.
+A terminal opens, fetches the latest version from Develop AI, and applies it.
+Your voices, podcasts, settings and history live in separate, private files, so
+an update never touches them. If anything ever can't be applied cleanly, the
+update stops without changing a thing and asks you to email Paul — it can't break
+your app or lose your work. When it says "Update complete", close the window and
+double-click Start again.
 
 The first time you run Update, your computer may need a tool called **git**:
 - **Mac:** you'll be prompted to install Apple's Command Line Tools. Click
@@ -329,10 +304,9 @@ top-right to switch or re-enter a key if needed.
 The app isn't running. Look at the terminal — does it still say "is running"? If
 not, run `npm start` again.
 
-**Update says "couldn't apply the update automatically"**
-A code file got changed locally, so the update stopped rather than risk your work
-— nothing was changed. Email Paul a screenshot and mention "update merge"; nothing
-is lost.
+**Update says it can't apply the update / "local changes would be overwritten"**
+A file got changed locally, so the update stopped rather than risk your work —
+nothing was changed. Email Paul a screenshot; nothing is lost.
 
 **Something else**
 Email Paul with: (a) which step you're on, (b) what you typed, (c) the exact text
@@ -347,8 +321,7 @@ of any error message. A screenshot helps.
 - **npm** — "Node Package Manager". Downloads the pieces the app needs. Comes
   with Node.js.
 - **GitHub** — a website that stores code and tracks changes.
-- **Fork** — your personal copy of someone else's GitHub project.
-- **git** — the tool the Update script uses to fetch the latest version. Free on
+- **git** — the tool VS Code uses to copy the app and fetch updates. Free on
   Mac (via Apple's Command Line Tools) and Windows (via Git for Windows).
 - **Node** (capital N) — a newsroom-owned app on GROUNDED. This whole project is
   a Node.

@@ -22,14 +22,7 @@ Thumbs.db
 data/processed/podcasts/
 data/raw/voice_samples/
 
-# Intentionally NOT ignored — these ARE committed to the newsroom's fork
-# so the GROUNDED cohort dashboard can see the install:
-#   data/processed/node_podcasting_meta.json
-#   data/processed/node_podcasting_activity.json
-#   data/processed/node_podcasting_errors.json
-#   data/processed/node_podcasting_feedback.json
-#   data/processed/node_podcasting_voices.json     (names + dates, no audio)
-#   data/processed/node_podcasting_podcasts.json   (titles + counts, no transcripts/audio)
-#
-# If your Node ever handles confidential material, talk to Paul before
-# committing data — the Node setup may need adjusting first.
+# Node telemetry + local app state — stays on this computer. Usage stats now
+# reach the GROUNDED cohort dashboard over HTTP (not git), so these are never
+# committed; your copy stays a clean read-only mirror of the app repo:
+data/processed/node_podcasting_*.json

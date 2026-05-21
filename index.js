@@ -21,6 +21,14 @@ const pkg = JSON.parse(readFileSync(join(__dirname, "package.json"), "utf8"));
 const SLUG = "podcasting";
 const DISPLAY_NAME = "Podcast Studio";
 
+// GROUNDED telemetry collector (a Cloudflare Worker that relays into Airtable).
+// PUBLIC, low-value values committed here so every install reports its usage
+// automatically over HTTP — no fork, no GitHub login, no git push. Fill these in
+// after deploying collector/ in the grounded repo. Empty = telemetry off (the
+// app works fine, it just won't report). A real .env value takes precedence.
+process.env.GROUNDED_TELEMETRY_URL ||= "";   // e.g. "https://grounded-telemetry.<sub>.workers.dev"
+process.env.GROUNDED_TELEMETRY_TOKEN ||= ""; // the INBOUND_TOKEN set on the Worker
+
 const host = createLiteHost({
   appSlug: SLUG,
   nodeVersion: pkg.version,

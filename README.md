@@ -279,9 +279,12 @@ the web for the whole newsroom.
 - **On a Mac:** double-click **Update.command** in your folder.
 - **On Windows:** double-click **Update.bat**.
 
-A terminal opens, downloads the latest version, and applies it. Your settings,
-your voices, and your podcasts are preserved automatically. When it says "Update
-complete", close the window and double-click Start again.
+A terminal opens, fetches the latest version from Develop AI, and merges it into
+your copy. Your voices, podcasts, settings and usage stats are kept automatically
+— they live in different files from the app's code, so an update never touches
+them. If anything ever can't be merged cleanly, the update stops without changing
+a thing and asks you to email Paul — it can't break your app or lose your work.
+When it says "Update complete", close the window and double-click Start again.
 
 The first time you run Update, your computer may need a tool called **git**:
 - **Mac:** you'll be prompted to install Apple's Command Line Tools. Click
@@ -326,9 +329,10 @@ top-right to switch or re-enter a key if needed.
 The app isn't running. Look at the terminal — does it still say "is running"? If
 not, run `npm start` again.
 
-**Update says "couldn't apply the update"**
-You edited a file that Paul also changed. Email Paul a screenshot of the window;
-nothing is lost.
+**Update says "couldn't apply the update automatically"**
+A code file got changed locally, so the update stopped rather than risk your work
+— nothing was changed. Email Paul a screenshot and mention "update merge"; nothing
+is lost.
 
 **Something else**
 Email Paul with: (a) which step you're on, (b) what you typed, (c) the exact text

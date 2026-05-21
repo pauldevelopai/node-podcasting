@@ -1,0 +1,4 @@
+# The newsroom's own data always wins on merge — an upstream pull from
+# Develop AI never clobbers the install's telemetry, voices, or podcasts.
+data/processed/* merge=ours
+data/raw/* merge=ours

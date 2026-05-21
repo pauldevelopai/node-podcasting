@@ -1,0 +1,35 @@
+# Secrets — NEVER commit
+.env
+.env.local
+# Local ElevenLabs key store (built-in + newsroom-added keys). Stays on the
+# laptop; never pushed.
+elevenlabs-keys.json
+
+# Dependencies — re-installed by npm install
+node_modules/
+
+# OS cruft
+.DS_Store
+Thumbs.db
+*.log
+
+# Editor / Claude Code session state — must NEVER reach GitHub
+.vscode/
+.claude/
+
+# Node-specific media — stays on the newsroom's laptop, never uploaded:
+#   the generated MP3 podcasts and the raw voice-training audio samples.
+data/processed/podcasts/
+data/raw/voice_samples/
+
+# Intentionally NOT ignored — these ARE committed to the newsroom's fork
+# so the GROUNDED cohort dashboard can see the install:
+#   data/processed/node_explain_podcast_studio_meta.json
+#   data/processed/node_explain_podcast_studio_activity.json
+#   data/processed/node_explain_podcast_studio_errors.json
+#   data/processed/node_explain_podcast_studio_feedback.json
+#   data/processed/node_explain_podcast_studio_voices.json     (names + dates, no audio)
+#   data/processed/node_explain_podcast_studio_podcasts.json   (titles + counts, no transcripts/audio)
+#
+# If your Node ever handles confidential material, talk to Paul before
+# committing data — the Node setup may need adjusting first.

@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Explain Podcast Studio</title>
+
+<!-- GROUNDED chrome — terracotta top bar + footer + Feedback button -->
+<link rel="stylesheet" href="/grounded-chrome.css" />
+<script src="/grounded-chrome.js" defer></script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#12151b;--ink2:#191d25;--panel:#1d222b;--line:#2c323d;
+  --paper:#e8eaef;--paper-dim:#8b93a2;
+  --accent:#5a7da8;--accent-deep:#44617f;--accent-soft:#7ea0c6;
+  --good:#6fae8f;--alert:#d9685a;
+  --mono:'IBM Plex Mono',ui-monospace,monospace;--serif:'Newsreader',Georgia,serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--ink);color:var(--paper);font-family:var(--serif);-webkit-font-smoothing:antialiased;line-height:1.5}
+a{color:var(--accent-soft)}
+.wrap{max-width:1080px;margin:0 auto;padding:34px 26px 96px}
+
+.mast{border-bottom:2px solid var(--paper);padding-bottom:18px;display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap}
+.kicker{font-family:var(--mono);font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--accent);margin-bottom:10px;display:flex;align-items:center;gap:9px}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--accent);animation:pulse 2.4s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(90,125,168,.6)}70%{box-shadow:0 0 0 9px rgba(90,125,168,0)}100%{box-shadow:0 0 0 0 rgba(90,125,168,0)}}
+h1{font-size:42px;font-weight:600;letter-spacing:-.02em;line-height:1.05}
+h1 span{font-style:italic;font-weight:400;color:var(--paper-dim)}
+.mast-meta{font-family:var(--mono);font-size:11px;color:var(--paper-dim);text-align:right;line-height:2}
+.key-link{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--paper-dim);text-decoration:none;border-bottom:1px dotted var(--paper-dim)}
+.key-link:hover{color:var(--accent);border-bottom-color:var(--accent)}
+.sub{margin-top:16px;font-size:15.5px;color:var(--paper-dim);max-width:760px;border-left:2px solid var(--accent-deep);padding-left:16px}
+.sub b{color:var(--paper);font-weight:600}
+
+/* setup / key manager */
+.setup{margin:42px 0;border:1px solid var(--line);background:var(--ink2)}
+.setup-hd{padding:22px 28px;border-bottom:1px solid var(--line)}
+.setup-hd h2{font-size:24px;font-weight:600;margin-bottom:6px}
+.setup-hd p{color:var(--paper-dim);font-size:15px;max-width:680px}
+.key-list{padding:8px 28px}
+.key-row{display:flex;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.key-row:last-child{border-bottom:none}
+.key-row .lbl{font-weight:600;font-size:15px}
+.key-row .masked{font-family:var(--mono);font-size:12px;color:var(--paper-dim)}
+.key-row .spacer{flex:1}
+.badge{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;padding:2px 7px;border:1px solid var(--line);border-radius:2px;color:var(--paper-dim)}
+.badge.active{border-color:var(--good);color:var(--good)}
+.badge.builtin{border-color:var(--accent);color:var(--accent-soft)}
+.builtin-row{padding:14px 28px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);font-size:14px;color:var(--paper-dim)}
+.builtin-row label{display:flex;align-items:center;gap:10px;cursor:pointer}
+.setup-key{padding:22px 28px;display:grid;gap:12px}
+.setup-key label{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--paper-dim)}
+.setup-key input{width:100%;background:var(--ink);color:var(--paper);border:1px solid var(--line);padding:11px 14px;font-family:var(--mono);font-size:14px}
+.setup-key input:focus{outline:none;border-color:var(--accent)}
+.setup-err{padding:12px 16px;margin:0 28px 16px;border:1px solid var(--alert);color:var(--alert);font-size:14px;display:none}
+.setup-err.on{display:block}
+.setup-actions{padding:0 28px 24px;display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap}
+.setup-help{font-size:13px;color:var(--paper-dim);flex:1;min-width:240px}
+.setup-help a{color:var(--accent-soft)}
+
+/* tabs */
+.tabs{display:flex;margin:34px 0 0;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.tab{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;background:none;border:none;color:var(--paper-dim);padding:13px 18px;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:.15s}
+.tab:hover{color:var(--paper)}
+.tab.on{color:var(--accent);border-bottom-color:var(--accent)}
+.view{display:none;padding-top:30px;animation:fade .35s ease}
+.view.on{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.sec-h{font-family:var(--mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--paper-dim);margin-bottom:4px}
+.sec-t{font-size:24px;font-weight:600;margin-bottom:6px}
+.sec-d{font-size:14.5px;color:var(--paper-dim);max-width:720px;margin-bottom:24px}
+.sec-d code,code{font-family:var(--mono);font-size:12.5px;color:var(--accent-soft);background:var(--ink2);padding:1px 5px;border-radius:3px}
+
+/* forms */
+.field{margin-bottom:18px}
+.field label{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--paper-dim);display:block;margin-bottom:7px}
+.field input[type=text],.field select,.field textarea{width:100%;background:var(--ink2);color:var(--paper);border:1px solid var(--line);padding:11px 13px;font-family:var(--serif);font-size:15px}
+.field input[type=text]:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--accent)}
+.field textarea{min-height:230px;resize:vertical;line-height:1.55}
+.field .hint{font-family:var(--mono);font-size:11px;color:var(--paper-dim);margin-top:6px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.btn{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;background:var(--accent);color:#0c0f14;border:none;padding:12px 24px;cursor:pointer;font-weight:600;transition:.15s}
+.btn:hover{background:var(--accent-soft)}
+.btn:disabled{background:var(--line);color:var(--paper-dim);cursor:wait}
+.btn.ghost{background:none;color:var(--paper-dim);border:1px solid var(--line)}
+.btn.ghost:hover{color:var(--paper);border-color:var(--paper-dim)}
+.btn.danger{background:none;color:var(--alert);border:1px solid transparent;padding:6px 10px;font-size:11px}
+.btn.danger:hover{border-color:var(--alert)}
+.btn.sm{padding:7px 13px;font-size:11px}
+.filebtn{display:inline-block;font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;background:var(--ink2);color:var(--accent-soft);border:1px solid var(--line);padding:11px 18px;cursor:pointer}
+.filebtn:hover{border-color:var(--accent)}
+.filename{font-family:var(--mono);font-size:12px;color:var(--paper-dim);margin-left:12px}
+input[type=file]{display:none}
+
+/* progress + result */
+.progress{margin:22px 0;padding:20px 22px;border:1px solid var(--line);background:var(--ink2);display:none}
+.progress.on{display:block}
+.progress .lbl{font-family:var(--mono);font-size:12px;letter-spacing:.05em;color:var(--accent-soft);display:flex;justify-content:space-between;margin-bottom:12px}
+.bar{height:8px;background:var(--ink);border:1px solid var(--line);overflow:hidden;position:relative}
+.bar .ind{position:absolute;left:-40%;width:40%;height:100%;background:linear-gradient(90deg,transparent,var(--accent),transparent);animation:slide 1.3s linear infinite}
+@keyframes slide{to{left:100%}}
+.result{margin:22px 0;padding:22px;border:1px solid var(--good);background:var(--ink2);display:none}
+.result.on{display:block}
+.result h3{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--good);margin-bottom:10px}
+audio{width:100%;margin:10px 0 4px;filter:saturate(.6)}
+
+/* cards + edit panel */
+.card{border:1px solid var(--line);background:var(--ink2);padding:18px 20px;margin-bottom:14px}
+.card .top{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap}
+.card .ttl{font-size:18px;font-weight:600}
+.card .meta{font-family:var(--mono);font-size:11px;color:var(--paper-dim);letter-spacing:.04em;margin-top:5px;line-height:1.8}
+.card .meta b{color:var(--paper)}
+.card-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.dl{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent-soft);text-decoration:none;border-bottom:1px dotted var(--accent-soft)}
+.empty-note{padding:40px 26px;border:1px dashed var(--line);text-align:center;color:var(--paper-dim)}
+.empty-note b{color:var(--paper)}
+.edit-panel{margin-top:18px;padding-top:18px;border-top:1px solid var(--line);display:none}
+.edit-panel.on{display:block}
+.edit-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+@media(max-width:760px){.edit-grid{grid-template-columns:1fr}.row2{grid-template-columns:1fr}h1{font-size:32px}}
+.slider-row{display:grid;grid-template-columns:120px 1fr 44px;gap:12px;align-items:center;margin-bottom:12px}
+.slider-row .sl-lbl{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--paper-dim)}
+.slider-row .sl-val{font-family:var(--mono);font-size:12px;text-align:right;color:var(--accent-soft)}
+input[type=range]{width:100%;accent-color:var(--accent);background:transparent}
+.check-row{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--paper-dim);margin:4px 0 14px}
+.panel-h{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--paper-dim);margin-bottom:12px}
+
+/* activity table */
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--paper-dim);text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);font-weight:500}
+th.r,td.r{text-align:right;font-variant-numeric:tabular-nums}
+td{padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:hover td{background:var(--ink2)}
+.op{font-family:var(--mono);font-size:12px}
+.op.ok{color:var(--good)}.op.fail{color:var(--alert)}.op.dim{color:var(--paper-dim)}
+.mono{font-family:var(--mono)}.dim{color:var(--paper-dim)}
+
+.err{color:var(--alert);padding:11px 15px;border:1px solid var(--alert);margin-top:14px;font-size:14px;display:none}
+.err.on{display:block}
+.foot{margin-top:48px;border-top:1px solid var(--line);padding-top:18px;font-family:var(--mono);font-size:11px;color:var(--paper-dim);line-height:1.8}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="mast">
+    <div>
+      <div class="kicker"><span class="dot"></span> Explain · Podcast Studio · running locally</div>
+      <h1>Explain <span>Podcast Studio</span></h1>
+    </div>
+    <div class="mast-meta">
+      <span id="voice-count">—</span><br>
+      <a href="#" class="key-link" id="open-setup" style="display:none">API keys</a>
+    </div>
+  </div>
+
+  <div class="sub">
+    Train a journalist's voice from short, clean audio samples — then paste a
+    transcript and generate an audio podcast <b>in that voice</b>. Audio, transcripts
+    and your API keys stay on this computer.
+  </div>
+
+  <!-- Welcome / key manager -->
+  <div id="setup" class="setup" style="display:none">
+    <div class="setup-hd">
+      <h2 id="setup-title">Welcome — add your ElevenLabs key</h2>
+      <p id="setup-intro">This Studio uses <b>ElevenLabs</b> to clone voices and generate audio.
+        Add a key to get started — voice cloning needs a paid ElevenLabs plan (Starter tier or above).</p>
+    </div>
+
+    <div id="key-list" class="key-list"></div>
+
+    <div id="builtin-row" class="builtin-row" style="display:none">
+      <label><input type="checkbox" id="builtin-toggle"> Use the built-in shared key (Develop AI). Turn this off to use only your own keys.</label>
+    </div>
+
+    <div class="setup-key">
+      <label for="setup-key-input">Add a key</label>
+      <input id="key-label-input" type="text" autocomplete="off" placeholder="Label — e.g. “Explain newsroom” (optional)">
+      <input id="setup-key-input" type="password" autocomplete="off" placeholder="paste ElevenLabs API key">
+    </div>
+    <div class="setup-err" id="setup-err"></div>
+    <div class="setup-actions">
+      <div class="setup-help">Keys stay on this computer in a git-ignored file — never uploaded to GitHub.
+        Get a key at <a href="https://elevenlabs.io" target="_blank" rel="noopener">elevenlabs.io</a> → Profile → API Keys.</div>
+      <div class="card-actions">
+        <button class="btn ghost" id="setup-done" style="display:none">Done</button>
+        <button class="btn" id="setup-save">Add key</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main app -->
+  <div id="app" style="display:none">
+    <div class="tabs">
+      <button class="tab on" data-v="generate">Generate</button>
+      <button class="tab" data-v="voices">Voices</button>
+      <button class="tab" data-v="history">History</button>
+      <button class="tab" data-v="activity">Activity</button>
+    </div>
+
+    <!-- Generate -->
+    <div id="v-generate" class="view on">
+      <div class="sec-h">Text → audio · in a trained voice</div>
+      <div class="sec-t">Generate a podcast</div>
+      <div class="sec-d">Pick a voice, paste your transcript, give it a title, and generate. The voice's saved
+        slider settings (Voices tab) are applied. The MP3 is saved to <code>data/processed/podcasts/</code> and listed under History.</div>
+
+      <div id="no-voices" class="empty-note" style="display:none">
+        <p>No voices trained yet. Go to the <b>Voices</b> tab and train one from audio samples first.</p>
+      </div>
+
+      <div id="gen-form" style="display:none">
+        <div class="row2">
+          <div class="field">
+            <label for="gen-voice">Voice</label>
+            <select id="gen-voice"></select>
+          </div>
+          <div class="field">
+            <label for="gen-title">Episode title <span class="dim">(optional)</span></label>
+            <input id="gen-title" type="text" placeholder="e.g. Episode 12 — The waste land">
+          </div>
+        </div>
+        <div class="field">
+          <label for="gen-transcript">Transcript</label>
+          <textarea id="gen-transcript" placeholder="Paste the podcast script here…"></textarea>
+          <div class="hint"><span id="char-count">0</span> characters · limit 40,000 per episode</div>
+        </div>
+        <button class="btn" id="gen-go">Generate podcast</button>
+        <div class="err" id="gen-err"></div>
+        <div class="progress" id="gen-progress">
+          <div class="lbl"><span id="gen-progress-lbl">Generating audio…</span><span id="gen-elapsed">0s</span></div>
+          <div class="bar"><div class="ind"></div></div>
+        </div>
+        <div class="result" id="gen-result">
+          <h3>✓ Generated</h3>
+          <div class="ttl" id="gen-result-title"></div>
+          <audio id="gen-audio" controls></audio>
+          <div class="card-actions">
+            <a class="dl" id="gen-dl" href="#" download>Download MP3</a>
+            <span class="dim mono" id="gen-result-meta"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Voices -->
+    <div id="v-voices" class="view">
+      <div class="sec-h">Instant Voice Cloning · ElevenLabs</div>
+      <div class="sec-t">Trained voices</div>
+      <div class="sec-d">Train from one or more short (1–2 min) clean samples of one person speaking — more
+        clips usually means a better clone. Samples stay on this computer.</div>
+
+      <div class="card">
+        <div class="field">
+          <label for="voice-name">New voice name</label>
+          <input id="voice-name" type="text" placeholder="e.g. Kerry-Anne Kuhn">
+        </div>
+        <div class="field">
+          <label>Audio samples (one or more)</label>
+          <label class="filebtn" for="voice-file">Choose audio files</label>
+          <input id="voice-file" type="file" accept="audio/*,.mp3,.wav,.m4a,.ogg,.flac" multiple>
+          <span class="filename" id="voice-filename">no files chosen</span>
+        </div>
+        <button class="btn" id="voice-train">Train a new voice</button>
+        <div class="err" id="voice-err"></div>
+        <div class="progress" id="voice-progress">
+          <div class="lbl"><span>Training voice — this takes 1–3 minutes…</span><span id="voice-elapsed">0s</span></div>
+          <div class="bar"><div class="ind"></div></div>
+        </div>
+      </div>
+
+      <div id="voices-list"></div>
+    </div>
+
+    <!-- History -->
+    <div id="v-history" class="view">
+      <div class="sec-h">Generated episodes · on this computer</div>
+      <div class="sec-t">History</div>
+      <div class="sec-d">Every podcast you've generated. Play it here, download the MP3, or delete it
+        (which removes the file from disk).</div>
+      <div id="history-list"></div>
+    </div>
+
+    <!-- Activity -->
+    <div id="v-activity" class="view">
+      <div class="sec-h">Everything this Node has done · committed to your fork</div>
+      <div class="sec-t">Activity log</div>
+      <div class="sec-d">Operation names, timestamps, durations and counts — the same metadata the GROUNDED
+        cohort dashboard sees. <b>Never</b> your transcripts, audio, or API keys. Lives at
+        <code>data/processed/node_explain_podcast_studio_activity.json</code>.</div>
+      <table>
+        <thead><tr><th>When</th><th>Operation</th><th>Voice</th><th class="r">Chars</th><th class="r">Audio</th><th class="r">Took</th></tr></thead>
+        <tbody id="activity-tb"></tbody>
+      </table>
+      <div id="activity-empty" class="empty-note" style="display:none;margin-top:18px">
+        <p>Nothing logged yet. Train a voice or generate a podcast and it'll show up here.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot">
+    Explain Podcast Studio — a Node on GROUNDED, running on your computer.<br>
+    Voices and audio stay local. Voice cloning &amp; generation use the ElevenLabs API.
+  </div>
+</div>
+
+<script src="/app.js"></script>
+</body>
+</html>

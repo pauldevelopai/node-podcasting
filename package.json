@@ -1,0 +1,19 @@
+{
+  "name": "node-podcasting",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Explain Podcast Studio — a Node on GROUNDED. Train a journalist's voice from a short sample, then turn a transcript into an AI-generated audio podcast in that voice.",
+  "type": "module",
+  "main": "index.js",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js"
+  },
+  "dependencies": {
+    "@developai/grounded-node-runtime": "github:pauldevelopai/grounded-node-runtime#main",
+    "dotenv": "^16.4.5",
+    "@elevenlabs/elevenlabs-js": "^2.49.0"
+  },
+  "license": "Apache-2.0"
+}

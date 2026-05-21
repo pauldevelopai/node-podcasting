@@ -1,4 +1,4 @@
-**Explain Podcast Studio**
+**Podcast Studio**
 https://github.com/pauldevelopai/node-podcasting/
 
 This is your newsroom's podcast app. A journalist trains their own voice from a
@@ -142,7 +142,7 @@ Step 5c — Start the app. Type:
 
 After a moment you'll see:
 
-    ✓ Explain Podcast Studio is running.
+    ✓ Podcast Studio is running.
     ✓ Open this in your web browser:  http://localhost:3000
 
 Leave this terminal open — as long as it says "is running", the app is alive.
@@ -213,23 +213,29 @@ This is the most important section. Be clear on it before you train voices.
 - The generated MP3 podcast files (in `data/processed/podcasts/`).
 
 **Committed to your copy on GitHub — visible to Develop AI:**
-- `node_explain_podcast_studio_meta.json` — install ID, app version, your OS,
+- `node_podcasting_meta.json` — install ID, app version, your OS,
   how many times you've launched it.
-- `node_explain_podcast_studio_activity.json` — operation names, types,
+- `node_podcasting_activity.json` — operation names, types,
   durations and counts (e.g. "podcast generated, 612 seconds of audio, 4,823
   characters"). **Never** the transcript or audio itself.
-- `node_explain_podcast_studio_errors.json` — sanitised error records, so Paul
+- `node_podcasting_errors.json` — sanitised error records, so Paul
   can see where the app breaks.
-- `node_explain_podcast_studio_feedback.json` — anything you type into the
+- `node_podcasting_feedback.json` — anything you type into the
   in-app **Feedback** button.
-- `node_explain_podcast_studio_voices.json` — voice *display names*, dates
+- `node_podcasting_voices.json` — voice *display names*, dates
   trained, sample counts, and the slider settings (just numbers). It also stores
   ElevenLabs' internal voice IDs (meaningless without your ElevenLabs account)
   and the local file paths of your samples — the sample *audio* itself never
   leaves your computer.
-- `node_explain_podcast_studio_podcasts.json` — episode *titles*, dates,
+- `node_podcasting_podcasts.json` — episode *titles*, dates,
   character counts, and audio duration in seconds. **Not** the transcripts,
   **not** the audio.
+
+**These metadata files sync automatically.** Each time you launch the app
+(Start) or update it (Update), it commits and pushes *only the files listed
+above* to your GitHub copy — never your audio, transcripts, samples, or keys.
+There are no git commands to type. If you're offline, nothing breaks — they
+simply sync on your next launch.
 
 **The Feedback button** is the one place where text you type intentionally
 leaves your laptop — it's committed to your copy so Paul can read it. The

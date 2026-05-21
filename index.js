@@ -1,5 +1,5 @@
 /**
- * Explain Podcast Studio — the Node's entry point.
+ * Podcast Studio — the Node's entry point.
  *
  * createServer gives us the GROUNDED chrome, telemetry, feedback, and the
  * auto-mounted welcome routes (getSetupStatus, postSetup, getActivity). The
@@ -18,8 +18,8 @@ import { dirname, join } from "node:path";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const pkg = JSON.parse(readFileSync(join(__dirname, "package.json"), "utf8"));
 
-const SLUG = "explain-podcast-studio";
-const DISPLAY_NAME = "Explain Podcast Studio";
+const SLUG = "podcasting";
+const DISPLAY_NAME = "Podcast Studio";
 
 const host = createLiteHost({
   appSlug: SLUG,

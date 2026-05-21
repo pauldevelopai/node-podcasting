@@ -1,4 +1,4 @@
-// public/app.js — Explain Podcast Studio frontend.
+// public/app.js — Podcast Studio frontend.
 // States: setup / key-manager  ↔  app (Generate · Voices · History · Activity).
 
 const $ = s => document.querySelector(s);
@@ -76,6 +76,8 @@ $("#setup-save").addEventListener("click", async () => {
       showApp();
       await Promise.all([loadVoices(), loadPodcasts()]);
       loadActivity();
+    } else if (data.configured) {
+      await refreshVoicesIfReady();   // app already open — refresh stale-state
     }
   } catch (e) {
     showErr(errBox, e.message);
@@ -85,16 +87,22 @@ $("#setup-save").addEventListener("click", async () => {
 });
 
 async function makeActiveKey(id) {
-  try { renderKeyManager(await postJSON("/api/keys/active", { id })); } catch (e) { alert(e.message); }
+  try { renderKeyManager(await postJSON("/api/keys/active", { id })); await refreshVoicesIfReady(); } catch (e) { alert(e.message); }
 }
 async function removeKey(id) {
   if (!confirm("Remove this key from this computer?")) return;
-  try { renderKeyManager(await delJSON(`/api/keys/${id}`)); } catch (e) { alert(e.message); }
+  try { renderKeyManager(await delJSON(`/api/keys/${id}`)); await refreshVoicesIfReady(); } catch (e) { alert(e.message); }
 }
 $("#builtin-toggle").addEventListener("change", async e => {
-  try { renderKeyManager(await postJSON("/api/keys/builtin", { disabled: !e.target.checked })); }
+  try { renderKeyManager(await postJSON("/api/keys/builtin", { disabled: !e.target.checked })); await refreshVoicesIfReady(); }
   catch (err) { alert(err.message); }
 });
+
+// Changing the active key changes which voices are usable — re-pull voices so
+// the stale-state grey-out and warnings update live (only when the app is up).
+async function refreshVoicesIfReady() {
+  if (KEYSTATUS && KEYSTATUS.configured) await loadVoices();
+}
 
 $("#open-setup").addEventListener("click", async e => {
   e.preventDefault();
@@ -140,30 +148,72 @@ function renderVoices() {
     wrap.innerHTML = `<div class="empty-note"><p>No voices yet. Add a name + audio samples above, then <b>Train a new voice</b>.</p></div>`;
     return;
   }
-  wrap.innerHTML = VOICES.map(v => `
-    <div class="card">
+  wrap.innerHTML = VOICES.map(v => {
+    const stale = v.key_available === false;
+    const keyLine = v.trained_key_label
+      ? ` · key <b>${esc(v.trained_key_label)}</b>`
+      : (v.key_untagged ? ` · key <span class="dim">untagged</span>` : "");
+    const warn = stale ? `<div class="voice-warn">⚠ Trained with the
+      ${v.trained_key_label ? `<b>${esc(v.trained_key_label)}</b>` : "previous"} key — not the active one.
+      Preview, editing and generation will fail until you
+      <a data-open-keys="1">switch to that key</a> under API keys.</div>` : "";
+    return `
+    <div class="card${stale ? " stale" : ""}">
       <div class="top">
         <div>
           <div class="ttl">${esc(v.display_name)}</div>
-          <div class="meta">trained <b>${fmtDate(v.created)}</b> · ${v.samples_count || 1} sample${(v.samples_count || 1) === 1 ? "" : "s"} · model <code>${esc(v.model || "")}</code></div>
+          <div class="meta">trained <b>${fmtDate(v.created)}</b> · ${v.samples_count || 1} sample${(v.samples_count || 1) === 1 ? "" : "s"} · model <code>${esc(v.model || "")}</code>${keyLine}</div>
         </div>
         <div class="card-actions">
           <button class="btn sm ghost" data-edit="${v.id}">Edit &amp; test</button>
           <button class="btn danger" data-del-voice="${v.id}">Delete</button>
         </div>
       </div>
+      ${warn}
       <div class="edit-panel" id="edit-${v.id}"></div>
-    </div>`).join("");
+    </div>`;
+  }).join("");
   wrap.querySelectorAll("[data-edit]").forEach(b => b.addEventListener("click", () => toggleEdit(b.dataset.edit)));
   wrap.querySelectorAll("[data-del-voice]").forEach(b => b.addEventListener("click", () => deleteVoice(b.dataset.delVoice)));
+  wireOpenKeysLinks(wrap);
 }
 
 function renderVoicePicker() {
   const sel = $("#gen-voice");
-  sel.innerHTML = VOICES.map(v => `<option value="${v.id}">${esc(v.display_name)}</option>`).join("");
+  sel.innerHTML = VOICES.map(v => {
+    const stale = v.key_available === false;
+    const label = stale
+      ? `⚠ ${v.display_name} — needs ${v.trained_key_label || "another"} key`
+      : v.display_name;
+    return `<option value="${v.id}">${esc(label)}</option>`;
+  }).join("");
   const has = VOICES.length > 0;
   $("#no-voices").style.display = has ? "none" : "block";
   $("#gen-form").style.display = has ? "block" : "none";
+  updateGenKeyNote();
+}
+
+// Warn (don't block) when the voice selected for generation was trained under a
+// key other than the active one — generation would fail at ElevenLabs.
+function updateGenKeyNote() {
+  const note = $("#gen-key-note");
+  if (!note) return;
+  const v = VOICES.find(x => x.id === $("#gen-voice").value);
+  if (v && v.key_available === false) {
+    note.innerHTML = `⚠ <b>${esc(v.display_name)}</b> was trained with the
+      ${v.trained_key_label ? `<b>${esc(v.trained_key_label)}</b>` : "previous"} key.
+      Generation will fail until you <a data-open-keys="1">switch to that key</a> under API keys.`;
+    note.style.display = "block";
+    wireOpenKeysLinks(note);
+  } else {
+    note.style.display = "none";
+  }
+}
+
+// Any element with data-open-keys opens the API-keys manager.
+function wireOpenKeysLinks(container) {
+  container.querySelectorAll("[data-open-keys]").forEach(a =>
+    a.addEventListener("click", e => { e.preventDefault(); $("#open-setup").click(); }));
 }
 
 // New-voice training (multi-file)
@@ -248,7 +298,7 @@ function buildEditPanel(voice) {
       <div>
         <div class="panel-h">Test this voice (not saved to History)</div>
         <div class="field">
-          <textarea id="test-${id}" style="min-height:120px">This is a quick test of how this voice sounds in the Explain Podcast Studio.</textarea>
+          <textarea id="test-${id}" style="min-height:120px">This is a quick test of how this voice sounds in the Podcast Studio.</textarea>
         </div>
         <button class="btn sm ghost" id="playtest-${id}">▶ Play test</button>
         <audio id="testaudio-${id}" controls style="display:none"></audio>
@@ -342,6 +392,7 @@ async function deleteVoice(id) {
 $("#gen-transcript").addEventListener("input", e => {
   $("#char-count").textContent = e.target.value.length.toLocaleString();
 });
+$("#gen-voice").addEventListener("change", updateGenKeyNote);
 
 $("#gen-go").addEventListener("click", async () => {
   const errBox = $("#gen-err");

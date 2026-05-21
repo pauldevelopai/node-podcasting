@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Explain Podcast Studio</title>
+<title>Podcast Studio</title>
 
 <!-- GROUNDED chrome — terracotta top bar + footer + Feedback button -->
 <link rel="stylesheet" href="/grounded-chrome.css" />
@@ -129,6 +129,13 @@ input[type=range]{width:100%;accent-color:var(--accent);background:transparent}
 .check-row{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--paper-dim);margin:4px 0 14px}
 .panel-h{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--paper-dim);margin-bottom:12px}
 
+/* stale voice (trained under a different key than the active one) */
+.card.stale{opacity:.62}
+.card.stale .ttl{color:var(--paper-dim)}
+.voice-warn{margin-top:14px;padding:11px 14px;border:1px solid var(--alert);border-left-width:3px;background:rgba(217,104,90,.09);color:var(--paper);font-size:13px;line-height:1.55}
+.voice-warn b{color:var(--paper)}
+.voice-warn a{color:var(--accent-soft);cursor:pointer}
+
 /* activity table */
 table{width:100%;border-collapse:collapse;font-size:14px}
 th{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--paper-dim);text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);font-weight:500}
@@ -149,8 +156,8 @@ tr:hover td{background:var(--ink2)}
 
   <div class="mast">
     <div>
-      <div class="kicker"><span class="dot"></span> Explain · Podcast Studio · running locally</div>
-      <h1>Explain <span>Podcast Studio</span></h1>
+      <div class="kicker"><span class="dot"></span> Podcast Studio · running locally</div>
+      <h1>Podcast <span>Studio</span></h1>
     </div>
     <div class="mast-meta">
       <span id="voice-count">—</span><br>
@@ -180,7 +187,7 @@ tr:hover td{background:var(--ink2)}
 
     <div class="setup-key">
       <label for="setup-key-input">Add a key</label>
-      <input id="key-label-input" type="text" autocomplete="off" placeholder="Label — e.g. “Explain newsroom” (optional)">
+      <input id="key-label-input" type="text" autocomplete="off" placeholder="Label — e.g. “Our newsroom” (optional)">
       <input id="setup-key-input" type="password" autocomplete="off" placeholder="paste ElevenLabs API key">
     </div>
     <div class="setup-err" id="setup-err"></div>
@@ -225,6 +232,7 @@ tr:hover td{background:var(--ink2)}
             <input id="gen-title" type="text" placeholder="e.g. Episode 12 — The waste land">
           </div>
         </div>
+        <div class="voice-warn" id="gen-key-note" style="display:none"></div>
         <div class="field">
           <label for="gen-transcript">Transcript</label>
           <textarea id="gen-transcript" placeholder="Paste the podcast script here…"></textarea>
@@ -292,7 +300,7 @@ tr:hover td{background:var(--ink2)}
       <div class="sec-t">Activity log</div>
       <div class="sec-d">Operation names, timestamps, durations and counts — the same metadata the GROUNDED
         cohort dashboard sees. <b>Never</b> your transcripts, audio, or API keys. Lives at
-        <code>data/processed/node_explain_podcast_studio_activity.json</code>.</div>
+        <code>data/processed/node_podcasting_activity.json</code>.</div>
       <table>
         <thead><tr><th>When</th><th>Operation</th><th>Voice</th><th class="r">Chars</th><th class="r">Audio</th><th class="r">Took</th></tr></thead>
         <tbody id="activity-tb"></tbody>
@@ -304,7 +312,7 @@ tr:hover td{background:var(--ink2)}
   </div>
 
   <div class="foot">
-    Explain Podcast Studio — a Node on GROUNDED, running on your computer.<br>
+    Podcast Studio — a Node on GROUNDED, running on your computer.<br>
     Voices and audio stay local. Voice cloning &amp; generation use the ElevenLabs API.
   </div>
 </div>

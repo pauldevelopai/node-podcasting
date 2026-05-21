@@ -195,6 +195,39 @@ To stop the app: close the terminal window (or press Ctrl+C in it).
 
 ---
 
+**Changing the code yourself (optional)**
+
+Your copy is yours to tinker with — it's just files on your computer. If you'd
+like to look at or change how the app works, use **VS Code** (the free editor
+from Part 2 — install it now if you skipped it).
+
+Open the app in VS Code:
+- **File → Open Folder…** → choose the **node-podcasting** folder → **Open**.
+- If asked "Do you trust the authors?", click **Yes**.
+
+On the left you'll see the files. The ones worth knowing:
+- **public/** — the screens you see in the browser (the page, the styling, the
+  buttons).
+- **lib/handlers.js** — the app's logic (training voices, generating podcasts).
+- **index.js** — where the app starts up and its routes are wired.
+
+To see a change as you work:
+- **Screens (`public/`):** save the file, then just **refresh the browser tab**.
+- **Logic (`lib/`, `index.js`):** stop the app (Ctrl+C in the Terminal) and run
+  `npm start` again — or run `npm run dev` instead of `npm start`, which watches
+  the code and restarts itself every time you save.
+
+Two things to know:
+- **Updates vs. your edits:** if you change one of the app's *code* files and
+  later run Update, the update may stop rather than overwrite your work (nothing
+  is lost — see the troubleshooting note further down). If you want changes that
+  survive updates, tell Paul — they're better folded into the app for everyone.
+- **If something breaks:** nothing here can harm your voices or podcasts (those
+  live in separate files). Worst case, delete the folder and redo Part 4 for a
+  fresh copy — or email Paul.
+
+---
+
 **What you share with Develop AI**
 
 This is the most important section. Be clear on it before you train voices.

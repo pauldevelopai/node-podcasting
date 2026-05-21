@@ -26,8 +26,8 @@ const DISPLAY_NAME = "Podcast Studio";
 // automatically over HTTP — no fork, no GitHub login, no git push. Fill these in
 // after deploying collector/ in the grounded repo. Empty = telemetry off (the
 // app works fine, it just won't report). A real .env value takes precedence.
-process.env.GROUNDED_TELEMETRY_URL ||= "";   // e.g. "https://grounded-telemetry.<sub>.workers.dev"
-process.env.GROUNDED_TELEMETRY_TOKEN ||= ""; // the INBOUND_TOKEN set on the Worker
+process.env.GROUNDED_TELEMETRY_URL ||= "https://grounded-telemetry.paul-a35.workers.dev";
+process.env.GROUNDED_TELEMETRY_TOKEN ||= "6adf8612a6b26e8cc84349467f2c605e";
 
 const host = createLiteHost({
   appSlug: SLUG,

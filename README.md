@@ -40,7 +40,8 @@ bottom. Read it.
 We'll do six things. Each one is small. After each, the app gets a bit closer to
 running.
 
-1. Install two free programs on your computer (Node.js and VS Code).
+1. Install Node.js — the free engine the app runs on. (A code editor like VS
+   Code is optional.)
 2. Get an ElevenLabs account and API key (this is the service that clones the
    voice and generates the audio).
 3. Get a copy of the app onto your computer, through GitHub.
@@ -65,14 +66,12 @@ password.
 When it says "Installation Successful", click Close.
 You won't see a new app icon — that's normal. Node.js works behind the scenes.
 
-**Part 2 — Install VS Code (where you'll type two commands)**
+**Part 2 — Install VS Code (optional)**
 
-VS Code is a free app from Microsoft. We'll use it to look at the app's code and
-to type the few commands that start it.
-In your browser, go to: **code.visualstudio.com**
-Click the big blue Download button. Open the downloaded file and follow the
-installer, accepting the defaults.
-When it's installed, open VS Code. Close the welcome tab — we'll come back.
+VS Code is a free code editor from Microsoft. You only need it if you want to
+*look at or change* the app's code — it is **not** needed to run the app. If you
+want it, get it at **code.visualstudio.com** (download, open, accept the
+defaults). Otherwise, skip straight to Part 3.
 
 **Part 3 — Get an ElevenLabs account and API key**
 
@@ -92,39 +91,35 @@ app stores keys in private files on your own computer that never go to GitHub.
 
 **Part 4 — Get the app onto your computer**
 
-GitHub is the website where the app's code lives. You'll copy it to your
-computer using VS Code — **no GitHub account, no sign-in, no "fork"**, and
-nothing ever gets pushed back from your machine. Your copy is yours: even if
+You'll use the **Terminal** — a plain text window that's already built into your
+computer — to copy the app down. **No GitHub account, no sign-in, no "fork"**,
+and nothing ever gets pushed back from your machine. Your copy is yours: even if
 Develop AI disappears tomorrow, it keeps working.
 
-Step 4a — Clone the app in VS Code
-1. In VS Code, open the **Command Palette**: **View → Command Palette…** (or
-   press Cmd-Shift-P on Mac / Ctrl-Shift-P on Windows).
-2. Type **Git: Clone** and press Enter.
-3. Paste this address and press Enter:
+Step 4a — Open the Terminal
+- **Mac:** press **Cmd-Space**, type **Terminal**, and press Enter.
+- **Windows:** click **Start**, type **PowerShell**, and press Enter.
 
-       https://github.com/pauldevelopai/node-podcasting.git
+A plain window opens with a blinking cursor. That's all it is.
 
-4. Choose where to put it (Documents is fine). VS Code downloads it and asks
-   **"Would you like to open the cloned repository?"** — click **Open**.
+Step 4b — Copy the app down
+Paste this line into the Terminal and press Enter:
 
-That's the whole thing — no fork, no login. (If VS Code says it can't find
-**git**: on a Mac, click **Install** on the "Command Line Tools" pop-up — a
-one-time, few-minute step — then try again; on Windows, install Git from
-**git-scm.com**, then reopen VS Code.)
+    git clone https://github.com/pauldevelopai/node-podcasting.git
 
-(Comfortable in a terminal instead? `git clone https://github.com/pauldevelopai/node-podcasting.git` does the same.)
-
-On the left you'll now see the app's files: data, lib, public, index.js,
-package.json, and so on. That's the app.
+It downloads a folder called **node-podcasting** into your home folder. (If you
+see **"git: command not found"**: on a Mac, a pop-up offers to install "Command
+Line Tools" — click **Install**, wait a few minutes, then paste the line again;
+on Windows, install Git from **git-scm.com**, close and reopen PowerShell, and
+try again.)
 
 **Part 5 — Run the app for the first time**
 
-Step 5a — Open VS Code's terminal: View → Terminal. A panel opens at the bottom
-with a prompt that mentions your folder name.
+Step 5a — In the **same Terminal window**, go into the app's folder:
 
-Step 5b — Install the app's parts. Click in the terminal, type exactly this and
-press Enter:
+    cd node-podcasting
+
+Step 5b — Install the app's parts:
 
     npm install
 
@@ -132,7 +127,7 @@ Text scrolls by for 30–60 seconds. When it finishes you get a fresh prompt —
 silence means success. (If you see "command not found: npm", Node.js didn't
 install — restart your computer and re-do Part 1.)
 
-Step 5c — Start the app. Type:
+Step 5c — Start the app:
 
     npm start
 
@@ -141,7 +136,9 @@ After a moment you'll see:
     ✓ Podcast Studio is running.
     ✓ Open this in your web browser:  http://localhost:3000
 
-Leave this terminal open — as long as it says "is running", the app is alive.
+Leave this Terminal window open — as long as it says "is running", the app is
+alive. (Next time it's just one double-click — see "Using the app after the
+first day" below.)
 
 **Part 6 — Open the app, add your key, make your first podcast**
 
@@ -274,8 +271,8 @@ This is a one-time install. After that, updates are always one double-click.
 **When something goes wrong**
 
 **"command not found: npm" or "node"**
-Node.js isn't installed correctly. Quit VS Code, restart your computer, re-do
-Part 1.
+Node.js isn't installed correctly. Close the Terminal, restart your computer,
+and re-do Part 1.
 
 **"EADDRINUSE: address already in use :::3000"**
 The app is already running in another terminal window. Close that one first.
@@ -321,7 +318,7 @@ of any error message. A screenshot helps.
 - **npm** — "Node Package Manager". Downloads the pieces the app needs. Comes
   with Node.js.
 - **GitHub** — a website that stores code and tracks changes.
-- **git** — the tool VS Code uses to copy the app and fetch updates. Free on
+- **git** — the tool that copies the app down and fetches updates. Free on
   Mac (via Apple's Command Line Tools) and Windows (via Git for Windows).
 - **Node** (capital N) — a newsroom-owned app on GROUNDED. This whole project is
   a Node.

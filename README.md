@@ -76,17 +76,10 @@ When it's installed, open VS Code. Close the welcome tab — we'll come back.
 
 **Part 3 — Get an ElevenLabs account and API key**
 
-This app uses **ElevenLabs** to clone voices and generate audio. You need one
-ElevenLabs API key. (You do *not* need Anthropic, OpenAI, or any other key.)
-
-> **Important:** voice cloning needs a **paid ElevenLabs plan — the Starter tier
-> or above.** The free tier cannot clone voices. Before you onboard your team,
-> check which plan your account is on (ElevenLabs → your profile → Subscription).
+You can start by using the Develop AI ElevenLabs account so you don't need an ElevenLabs API straight away, but just so you know, this app uses **ElevenLabs** to clone voices and generate audio and you will need a paid sub and a key from them. (You do *not* need Anthropic, OpenAI, or any other key.) The free tier cannot clone voices.
 > The bigger your plan, the more characters of audio you can generate per month.
 
-> **A note on the key:** Develop AI may give you a shared "built-in" key to get
-> you started. That key is *not* baked into the app's code — it lives in a
-> private file on your computer. When your newsroom gets its own ElevenLabs
+When your newsroom gets its own ElevenLabs
 > account, open **API keys** (top-right of the app), add your own key, and it
 > becomes active automatically. You can store several keys, switch which one is
 > active, and toggle the built-in shared key off entirely.

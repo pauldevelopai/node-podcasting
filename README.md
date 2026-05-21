@@ -92,17 +92,12 @@ app stores keys in private files on your own computer that never go to GitHub.
 **Part 4 — Get the app onto your computer**
 
 You'll use the **Terminal** — a plain text window that's already built into your
-computer — to copy the app down. **No GitHub account, no sign-in, no "fork"**,
-and nothing ever gets pushed back from your machine. Your copy is yours: even if
-Develop AI disappears tomorrow, it keeps working.
+computer — to copy the app down. 
 
-Step 4a — Open the Terminal
+Open the Terminal (it's a plain text window with a blinking cursor) 
 - **Mac:** press **Cmd-Space**, type **Terminal**, and press Enter.
 - **Windows:** click **Start**, type **PowerShell**, and press Enter.
 
-A plain window opens with a blinking cursor. That's all it is.
-
-Step 4b — Copy the app down
 Paste this line into the Terminal and press Enter:
 
     git clone https://github.com/pauldevelopai/node-podcasting.git
@@ -115,11 +110,11 @@ try again.)
 
 **Part 5 — Run the app for the first time**
 
-Step 5a — In the **same Terminal window**, go into the app's folder:
+In the **same Terminal window**, go into the app's folder:
 
     cd node-podcasting
 
-Step 5b — Install the app's parts:
+Install the app's parts:
 
     npm install
 
@@ -127,7 +122,7 @@ Text scrolls by for 30–60 seconds. When it finishes you get a fresh prompt —
 silence means success. (If you see "command not found: npm", Node.js didn't
 install — restart your computer and re-do Part 1.)
 
-Step 5c — Start the app:
+Start the app:
 
     npm start
 
@@ -228,7 +223,7 @@ Two things to know:
 
 ---
 
-**What you share with Develop AI**
+**What data you share with Develop AI**
 
 This is the most important section. Be clear on it before you train voices.
 

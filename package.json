@@ -13,7 +13,7 @@
     "dev": "node --watch index.js"
   },
   "dependencies": {
-    "@developai/grounded-node-runtime": "github:pauldevelopai/grounded-node-runtime#v0.8.0",
+    "@developai/grounded-node-runtime": "github:pauldevelopai/grounded-node-runtime#v0.9.0",
     "@elevenlabs/elevenlabs-js": "^2.49.0",
     "dotenv": "^16.4.5"
   },

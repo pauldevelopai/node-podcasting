@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# install.sh — one-command installer for the Audience Signal Node (macOS).
+# install.sh — one-command installer for the Podcast Studio Node (macOS).
 #
 # A newsroom runs ONE line in the built-in Terminal app — nothing to install by hand:
 #
